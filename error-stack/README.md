@@ -11,7 +11,7 @@ After some Googling, I found out several Go packages to help remedy this situati
 - [rotisserie/eris](https://pkg.go.dev/github.com/rotisserie/eris)
 - [pkg/errors](https://pkg.go.dev/github.com/pkg/errors)
 
-To put things in context, the Go package I have been using was the standard [errors](https://pkg.go.dev/errors) package.
+Also, the Go package I have been using is the standard [errors](https://pkg.go.dev/errors) package.
 
 ## Conclusion
 I find rotisserie/eris package the best, especially through the use of `eris.UnpackedError` to create custome message.
