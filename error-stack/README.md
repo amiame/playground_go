@@ -19,6 +19,12 @@ Simply run:
 make
 ```
 
+## How to check for package vulnerabilities
+Run:
+```bash
+make check-package-vulnerabilities
+```
+
 ## Conclusion
 I find rotisserie/eris package the best, especially through the use of `eris.UnpackedError` to create custome message.
 I believe that developers would appreciate not having to manually wrap every error messages everywhere they get returned to in the call stack.
