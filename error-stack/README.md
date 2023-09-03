@@ -149,5 +149,5 @@ of which the result is:
 }
 ```
 Personally, since we already have the `"stack_calls"`, I don't think wrapping is necessary.
-However, even if stick to it, the way it is displayed in eris package's case is much easier than the standard errors package,
+However, even if stick to it, the way it is displayed in eris package's case is much easier to read than the standard errors package,
 where every message is crammed into one line.
