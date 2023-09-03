@@ -21,17 +21,17 @@ Here's a comparison of the standard error code and eris's code:
 ```go
 // package1.go
 func Package1Function1(arg1 int) error {
-	if err := package1Function2(arg1); err != nil {
-		return fmt.Errorf("this is an error in function 1: %w", err) <--- Here developer needs to remember to wrap
-	}
-	return nil
+  if err := package1Function2(arg1); err != nil {
+    return fmt.Errorf("this is an error in function 1: %w", err) <--- Here developer needs to remember to wrap
+  }
+  return nil
 }
 
 func package1Function2(arg int) error {
-	if arg1 == 1 {
-		return nil
-	}
-	return std_errors.New("this is an error in function 2")
+  if arg1 == 1 {
+    return nil
+  }
+  return std_errors.New("this is an error in function 2")
 }
 
 // main.go (somewhere where we finally print the code)
@@ -39,8 +39,8 @@ func package1Function2(arg int) error {
 err = fmt.Errorf("this error is written in main: %w", err) <--- Also, developer needs to wrap here
 fmt.Println(err)
 for err != nil {
-    fmt.Println(err)
-    err = std_errors.Unwrap(err)
+  fmt.Println(err)
+  err = std_errors.Unwrap(err)
 }
 ```
 which produces:
@@ -54,40 +54,40 @@ this is an error in function 2
 ```go
 // package1.go
 func Package1Function1(arg1 int) error {
-	return package1Function2(arg1)  <--- No need to wrap
+  return package1Function2(arg1)  <--- No need to wrap
 }
 
 func package1Function2(arg int) error {
-	if arg1 == 1 {
-		return nil
-	}
-	return eris.New("this is an error in function 2")
+  if arg1 == 1 {
+    return nil
+  }
+  return eris.New("this is an error in function 2")
 }
 
 // main.go
 type Error struct {
-	Message string   `json:"message"`
-	Wraps   []string `json:"wrapping_messages,omitempty"`
-	Calls   []string `json:"stack_calls,omitempty"`
+  Message string   `json:"message"`
+  Wraps   []string `json:"wrapping_messages,omitempty"`
+  Calls   []string `json:"stack_calls,omitempty"`
 }
 
 func removeCurrentDirectory(path string) string {
-	return strings.Replace(path, workingDir+"/", "", -1)
+  return strings.Replace(path, workingDir+"/", "", -1)
 }
 
 // call Package1Function1
 unpackedErr := eris.Unpack(err)
 customError := Error{Message: unpackedErr.ErrRoot.Msg}
 if len(unpackedErr.ErrRoot.Stack) > 0 {
-    firstStack := unpackedErr.ErrRoot.Stack[0]
-    errorLocation := fmt.Sprintf("%s[L%d]: %s", removeCurrentDirectory(firstStack.File), firstStack.Line, firstStack.Name)
-    customError.Message = errorLocation + ": " + unpackedErr.ErrRoot.Msg
+  firstStack := unpackedErr.ErrRoot.Stack[0]
+  errorLocation := fmt.Sprintf("%s[L%d]: %s", removeCurrentDirectory(firstStack.File), firstStack.Line, firstStack.Name)
+  customError.Message = errorLocation + ": " + unpackedErr.ErrRoot.Msg
 }
 for _, l := range unpackedErr.ErrChain {
-    customError.Wraps = append(customError.Wraps, fmt.Sprintf("%s[L%d]: %s: %s", removeCurrentDirectory(l.Frame.File), l.Frame.Line, l.Frame.Name, l.Msg))
+  customError.Wraps = append(customError.Wraps, fmt.Sprintf("%s[L%d]: %s: %s", removeCurrentDirectory(l.Frame.File), l.Frame.Line, l.Frame.Name, l.Msg))
 }
 for _, s := range unpackedErr.ErrRoot.Stack {
-    customError.Calls = append(customError.Calls, fmt.Sprintf("%s[L%d]: %s", removeCurrentDirectory(s.File), s.Line, s.Name))
+  customError.Calls = append(customError.Calls, fmt.Sprintf("%s[L%d]: %s", removeCurrentDirectory(s.File), s.Line, s.Name))
 }
 u, _ = json.MarshalIndent(customError, "", "  ")
 fmt.Printf("%v\n", string(u))
