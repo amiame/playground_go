@@ -13,6 +13,12 @@ After some Googling, I found out several Go packages to help remedy this situati
 
 Also, the Go package I have been using is the standard [errors](https://pkg.go.dev/errors) package.
 
+## How to run the code
+Simply run:
+```bash
+make
+```
+
 ## Conclusion
 I find rotisserie/eris package the best, especially through the use of `eris.UnpackedError` to create custome message.
 I believe that developers would appreciate not having to manually wrap every error messages everywhere they get returned to in the call stack.
