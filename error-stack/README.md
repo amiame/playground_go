@@ -106,3 +106,4 @@ which produces
 
 Granted the implementation for eris in the main code is longer, but what's more important is that it removes manual message composing needed to be done in
 `Package1Function1`, and in main.go where the error does not originate from in the first place!
+All that is taken care of by looking at the `"stack_calls"`, which contains filename, line number, and function information of the call stack.
