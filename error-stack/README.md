@@ -37,7 +37,10 @@ func package1Function2(arg int) error {
 // call Package1Function1
 err = fmt.Errorf("this error is written in main: %w", err) <--- Also, developer needs to wrap here
 fmt.Println(err)
-fmt.Println(std_errors.Unwrap(err))
+for err != nil {
+    fmt.Println(err)
+    err = std_errors.Unwrap(err)
+}
 ```
 which produces:
 ```bash
