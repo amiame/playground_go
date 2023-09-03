@@ -107,3 +107,44 @@ which produces
 Granted the implementation for eris in the main code is longer, but what's more important is that it removes manual message composing needed to be done in
 `Package1Function1`, and in main.go where the error does not originate from in the first place!
 All that is taken care of by looking at the `"stack_calls"`, which contains filename, line number, and function information of the call stack.
+
+On top of that if, for instance, we did wrap our errors somewhere along the stack call, the `"wrapping_messages"` will show us those messages too:
+```go
+// package1.go
+func Package1Function1(arg1 int) error {
+  if err := package1Function2(arg1); err != nil {
+    return eris.Wrap(err, "this message is written in function 1")
+  }
+  return nil
+}
+
+func package1Function2(arg int) error {
+  if arg1 == 1 {
+    return nil
+  }
+  return eris.New("this is an error in function 2")
+}
+
+// main.go
+if err := Package1Function1(arg1); err != nil {
+  err = eris.Wrap(err, "this message is written in main")
+}
+// print the err
+```
+of which the result is:
+```bash
+{
+  "message": "package1/package1.go[L22]: package1.package1Function2: this is an error in function 2",
+  "wrapping_messages": [
+    "package1/package1.go[L13]: package1.Package1Function1: this message is written in function 1",
+    "main/main.go[L141]: main.main: this message is written in main"
+  ],
+  "stack_calls": [
+    "package1/package1.go[L22]: package1.package1Function2",
+    "package1/package1.go[L12]: package1.Package1Function1",
+    "package1/package1.go[L13]: package1.Package1Function1",
+    "main/main.go[L138]: main.main",
+    "main/main.go[L141]: main.main"
+  ]
+}
+```
