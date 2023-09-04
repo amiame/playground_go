@@ -21,19 +21,19 @@ For instance:
 package main
 
 import (
-	"fmt"
-	"myPkg/errors"
+  "fmt"
+  "myPkg/errors"
 )
 
 func funcA() error {
-	return errors.New("hey you!")
+  return errors.New("hey you!")
 }
 
 func main() {
-	err := funcA()
-    upErr := errors.Unpack(err)
-	u, _ := json.MarshalIndent(upErr, "", "  ")
-	fmt.Printf("%v\n", string(u))
+  err := funcA()
+  upErr := errors.Unpack(err)
+  u, _ := json.MarshalIndent(upErr, "", "  ")
+  fmt.Printf("%v\n", string(u))
 }
 
 /* output:
@@ -62,22 +62,22 @@ For example:
 package main
 
 import (
-	"encoding/json"
-	"fmt"
-	"myPkg/errors"
+  "encoding/json"
+  "fmt"
+  "myPkg/errors"
 )
 
 func funcA() error {
-	return errors.New("hey you!")
+  return errors.New("hey you!")
 }
 
 func main() {
-	err := funcA()
-	errors.Wrap(err, "This is wrap")
-	errors.Wrapf(err, "This is another %s", "wrap")
-	upErr := errors.Unpack(err)
-	u, _ := json.MarshalIndent(upErr, "", "  ")
-	fmt.Printf("%v\n", string(u))
+  err := funcA()
+  errors.Wrap(err, "This is wrap")
+  errors.Wrapf(err, "This is another %s", "wrap")
+  upErr := errors.Unpack(err)
+  u, _ := json.MarshalIndent(upErr, "", "  ")
+  fmt.Printf("%v\n", string(u))
 }
 /* output:
 {
@@ -120,44 +120,44 @@ For example, they can shorten the `file` value by cut out the project directory 
 package main
 
 import (
-	"fmt"
-	"myPkg/errors"
-	"os"
-	"strings"
+  "fmt"
+  "myPkg/errors"
+  "os"
+  "strings"
 )
 
 var workingDir string
 
 func init() {
-	// Get the current working directory
-	dir, err := os.Getwd()
-	if err != nil {
-		panic(fmt.Sprintf("Error: %s", err))
-	}
-	workingDir = dir
+  // Get the current working directory
+  dir, err := os.Getwd()
+  if err != nil {
+    panic(fmt.Sprintf("Error: %s", err))
+  }
+  workingDir = dir
 }
 
 func funcA() error {
-	return errors.New("hey you!")
+  return errors.New("hey you!")
 }
 
 func removeCurrentDirectory(path string) string {
-	return strings.Replace(path, workingDir+"/", "", -1)
+  return strings.Replace(path, workingDir+"/", "", -1)
 }
 
 func main() {
-	err := funcA()
-	errors.Wrap(err, "I'm wrapped")
-	errors.Wrap(err, "I'm wrapped2")
+  err := funcA()
+  errors.Wrap(err, "I'm wrapped")
+  errors.Wrap(err, "I'm wrapped2")
 
-	upErr := errors.Unpack(err)
-	for i, call := range upErr.Calls {
-		if call.Msg != "" {
-			fmt.Printf("%d) %s[%d]: %s: %s\n", i, removeCurrentDirectory(call.File), call.Line, call.Function, call.Msg)
-		} else {
-			fmt.Printf("%d) %s[%d]: %s\n", i, removeCurrentDirectory(call.File), call.Line, call.Function)
-		}
-	}
+  upErr := errors.Unpack(err)
+  for i, call := range upErr.Calls {
+    if call.Msg != "" {
+      fmt.Printf("%d) %s[%d]: %s: %s\n", i, removeCurrentDirectory(call.File), call.Line, call.Function, call.Msg)
+    } else {
+      fmt.Printf("%d) %s[%d]: %s\n", i, removeCurrentDirectory(call.File), call.Line, call.Function)
+    }
+  }
 }
 /* output:
 0) example_usecase/main/main.go[22]: main.funcA: hey you!
