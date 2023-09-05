@@ -164,3 +164,9 @@ func main() {
 3) example_usecase/main/main.go[32]: main.main: I'm wrapped2
 */
 ```
+
+## Documentation
+The project's documentation is hosted using godoc. Run:
+```
+make doc
+```
