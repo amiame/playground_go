@@ -8,7 +8,7 @@ doc:
 	@rm logs.txt
 
 clean:
-	@docker container stop godoc &> errors.txt || true
+	@docker container stop doc &> errors.txt || true
 	@docker image rm my-pkg-error-stack-golang:local &> errors.txt || true
 	@rm errors.txt
 
