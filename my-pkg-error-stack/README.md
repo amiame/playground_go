@@ -6,8 +6,6 @@ The problem was that for the sake of making it easier to trace bugs, we wrote in
 - the function name the error occurred,
 - the package the error occured
 
-The reason was to assist developers in tracing the source of the bug.
-
 This practice however has several drawbacks:
 - you have to write error messages for every function the error was returned to
 - you have to write the error messages manually
