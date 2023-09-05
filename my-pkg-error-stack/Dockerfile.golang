@@ -1,0 +1,10 @@
+FROM golang:latest
+
+RUN mkdir /go/src/app
+WORKDIR /go/src/app
+RUN go install golang.org/x/tools/cmd/godoc@latest
+
+ENV GO_PATH=/go/src/app
+COPY ./ .
+
+EXPOSE 6060/tcp
