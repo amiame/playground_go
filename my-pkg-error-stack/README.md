@@ -165,6 +165,11 @@ func main() {
 */
 ```
 
+## Examples
+```bash
+make example_usecase
+```
+
 ## Documentation
 The project's documentation is hosted using godoc. Run:
 ```
