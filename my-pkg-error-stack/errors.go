@@ -12,7 +12,7 @@ type call struct {
 	frame CallFrame
 }
 
-type Error struct {
+type myError struct {
 	calls *calls
 }
 
@@ -36,12 +36,12 @@ const (
 func New(msg string) error {
 	cs := getCalls(skipThisFunction)
 	cs[0].frame.Msg = msg
-	return &Error{
+	return &myError{
 		calls: &cs,
 	}
 }
 
-func (err *Error) Error() string {
+func (err *myError) Error() string {
 	cs := *err.calls
 	return fmt.Sprint(cs[0].frame.Msg)
 }
@@ -89,7 +89,7 @@ type UnpackedError struct {
 
 func Unpack(err error) UnpackedError {
 	switch err := err.(type) {
-	case *Error:
+	case *myError:
 		cfs := make([]CallFrame, 0)
 		for _, c := range *err.calls {
 			cfs = append(cfs, c.frame)
@@ -117,7 +117,7 @@ func wrap(err error, msg string) error {
 
 	cs := getCalls(skipThisFunctionAndOneAbove)
 	switch e := err.(type) {
-	case *Error:
+	case *myError:
 		e.calls.insertMsg(cs, msg)
 	}
 
