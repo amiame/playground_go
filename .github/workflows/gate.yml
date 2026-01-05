@@ -1,0 +1,33 @@
+name: "[Manual] Gated Workflow"
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: Which environment to run the migration?
+        required: true
+        type: choice
+        options:
+          - development
+          - staging
+          - prod
+      version:
+        description: "Migrate to what version? (e.g: 1, 2, 15)"
+        required: true
+        type: string
+jobs:
+  gate:
+    name: Deployment gate
+    runs-on: ubuntu-22.04
+    environment: ${{ inputs.environment }}
+    steps:
+      - name: Print approval message
+        run: echo "Deployment to ${{ github.event.inputs.environment }} approved by ${{ github.actor }}."
+  deploy:
+    needs: [gate]
+    name: Deploy
+    runs-on: mm-mir-dev-stg
+    steps:
+      - name: Print deployment message
+        run: echo "Deployed to ${{ github.event.inputs.environment }}."
+
